@@ -46,19 +46,25 @@ contract InteractionsTest is Test {
         vm.deal(PLAYER, STARTING_PLAYER_BALANCE);
     }
 
-    function testUsercanCreateSubscriptionUsingConfig() public {
+    function testUsercanCreateSubscription() public {
         // Arrange
         CreateSubscription create_Subscription = new CreateSubscription();
-        uint256 old_Id = helperconfig.getConfig().subscriptionID;
+        (uint256 sub_Id, ) = create_Subscription.createSubscription(
+            config.vrfCoordinator
+        );
+        // uint256 old_Id = helperconfig.getConfig().subscriptionID;
 
         // uint256 preSubId = address(PLAYER).subscriptionID;
         // address preVrfCoordinator = address(PLAYER).vrfCoordinator;
+
         // Act
         vm.prank(PLAYER);
-        (uint256 new_subId, ) = create_Subscription
-            .createSubscriptionUsingconfig();
+        (uint256 new_subId, ) = create_Subscription.createSubscription(PLAYER);
+        // (uint256 new_subId, ) = create_Subscription
+        //     .createSubscription();
         // uint256 new_Id = helperconfig.getConfig().subscriptionID;
+
         // Assert
-        assert(old_Id == new_subId);
+        assert(sub_Id == new_subId);
     }
 }
